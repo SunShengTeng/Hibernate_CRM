@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		 <!-- 数据库驱动 -->
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		 <!-- 数据库url -->
+		<property name="hibernate.connection.url">jdbc:mysql:///hibernate_day01</property>
+		 <!-- 数据库连接用户名 -->
+		<property name="hibernate.connection.username">sunshengteng</property>
+		 <!-- 数据库连接密码 -->
+		<property name="hibernate.connection.password">sst208521</property>
+		<!-- 数据库方言
+			不同的数据库中,sql语法略有区别. 指定方言可以让hibernate框架在生成sql语句时.针对数据库的方言生成.
+			sql99标准: DDL 定义语言  库表的增删改查
+					  DCL 控制语言  事务 权限
+					  DML 操纵语言  增删改查
+			注意: MYSQL在选择方言时,请选择最短的方言.，注意这里有一个傻逼问题，不知道为什么方言不能配置为MySQLDialect，必须使用子类MySQL5Dialect
+		 -->
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>	
+		
+		<!-- #hibernate.show_sql true 
+			 #hibernate.format_sql true
+		-->
+		<!-- 将hibernate生成的sql语句打印到控制台 -->
+		<property name="hibernate.show_sql">true</property>
+		<!-- 将hibernate生成的sql语句格式化(语法缩进) -->
+		<property name="hibernate.format_sql">true</property>
+		<!-- 
+		## auto schema export  自动导出表结构. 自动建表
+		#hibernate.hbm2ddl.auto create		自动建表.每次框架运行都会创建新的表.以前表将会被覆盖,表数据会丢失.(开发环境中测试使用)
+		#hibernate.hbm2ddl.auto create-drop 自动建表.每次框架运行结束都会将所有表删除.(开发环境中测试使用)
+		#hibernate.hbm2ddl.auto update(推荐使用) 自动生成表.如果已经存在不会再生成.如果表有变动.自动更新表(不会删除任何数据).
+		#hibernate.hbm2ddl.auto validate	校验.不自动生成表.每次启动会校验数据库中表是否正确.校验失败.
+		 -->
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<!-- 
+		#Hibernate5提供的三种管理Session对象的方法：本地事务、jta事务、Managed：
+
+		#　　　　1、本地事务(ThreadLocal将session与当前线程绑定)：使用 JDBC 事务界定时，您可以将多个 SQL 语句结合到一个事务中。JDBC 事务的一个缺点是事务的范围局限于一个数据库连接。一个 JDBC 事务不能跨越多个数据库。
+		
+		#　　　　2、jta事务(Session对象的生命周期与JTA事务绑定)：JTA是一种高层的，与实现无关的，与协议无关的API，应用程序和应用服务器可以使用JTA来访问事务。
+		#JTA允许应用程序执行分布式事务处理——在两个或多个网络计算机资源上访问并且更新数据，这些数据可以分布在多个数据库上。JDBC驱动程序的JTA支持极大地增强了数据访问能力。
+        #      3、managed(Hibernate委托程序来管理Session对象的生命周期)
+　　　　  #区别：JDBC事务控制的局限性在一个数据库连接内，但是其使用简单；JTA事务的功能强大，事务可以跨越多个数据库或多个DAO，使用较复杂。
+		
+		 -->	 
+		<property name="hibernate.current_session_context_class">thread</property>
+		<!-- 引入orm元数据
+			路径书写: 填写src下的路径
+		 -->
+		<mapping resource="cn/sst/hibernate/entity/Customer.hbm.xml" />
+		<mapping resource="cn/sst/hibernate/entity/LinkMan.hbm.xml" />
+		<mapping resource="cn/sst/hibernate/entity/User.hbm.xml" />
+		<mapping resource="cn/sst/hibernate/entity/Role.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>
